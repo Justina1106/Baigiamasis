@@ -1,68 +1,57 @@
 const express = require("express");
 const cors = require("cors");
-// const mongoose = require("mongoose");
-const { MongoClient } = require("mongodb");
-// const bodyParser = require("body-parser");
+// const { MongoClient } = require("mongodb");
+
 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-// const PORT = process.env.PORT || 3002;
+// app.use(express.json());
 
-// app.use(bodyParser.json());
+const port = 3000;
+// const URI =
+//   "mongodb+srv://admin:admin@cluster0.moabhd3.mongodb.net/?retryWrites=true&w=majority"; // connection stringas (nepamirstam pakeisti password)
 
-// MongoDB prisijungimas
-const port = 3002;
-const URI = 
-    "mongodb+srv://admin:admin@cluster0.moabhd3.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(URI);
+// const client = new MongoClient(URI);
 
-// mongoose.connect('mongodb+srv://admin:admin@cluster0.moabhd3.mongodb.net/?retryWrites=true&w=majority', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
+const users = [{_id: "123456", name: "Vita"}];
 
-// // MongoDB modelis
-// const User = mongoose.model('User', {
-//   name: String,
-//   email: String,
-//   age: Number,
-// });
-
-// Registracijos forma
-app.get("/", async (req, res) => {
-    try {
-      const con = await client.connect(); // prijungia prie Duomenu bazes
-      const data = await con.db("api").collection("users").find().toArray(); // veiksmas - istraukiama is duomenu bazes
-      await con.close(); // atsijungiam nuo duomenu bazes
-  
-      res.send(data); // issiunciam duomenis i route
-    } catch (error) {
-      res.status(400).send(error); // suhandlinam errora ir nustatom 400 http statusa, kad suprastu jog kazkas ne OK
-    }
-  });
-
-app.post('/api/users', async (req, res) => {
-  try {
-    const { name, email, age } = req.body;
-    const user = new User({ name, email, age });
-    await user.save();
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(500).json({ error: 'Nepavyko įrašyti vartotojo' });
-  }
+app.get("/users", (req, res) => {
+  res.send(users);
 });
 
-// Užsiregistravusių vartotojų sąrašas
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Nepavyko gauti vartotojų sąrašo' });
-  }
+app.post("/users", (req, res) => {
+  const user = req.body; // {name: "Vita"};
+  console.log(user);
+  const newUser = { ...user, _id: Date.now().toString() };
+  users.push(newUser);
+  res.send(newUser);
+  // res.send({ message: "Created" });
 });
 
-app.listen(port, () => console.log(`Serveris veikia portu ${port}`));
+// app.get("/tasks", async (req, res) => {
+//   try {
+//     const con = await client.connect();
+//     const response = await con.db("api").collection("users").find().toArray();
+//     await client.close();
+//     res.send(response);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// });
+
+// app.post("/users", async (req, res) => {
+//   try {
+//     const task = req.body; // {name: "..."}
+//     const con = await client.connect();
+//     const response = await con.db("api").collection("users").insertOne(task);
+//     await client.close();
+//     res.send(response);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// });
+
+app.listen(port, () => console.log(`Server is running on port ${port}`));
