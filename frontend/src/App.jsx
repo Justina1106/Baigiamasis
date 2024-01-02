@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import UserForm from "./UserForm";
 import { fetchUsers } from "./api/users";
+import { fetchTasks } from "./api/tasks";
 
 const App = () => {
-  const [users, setUsers] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   // useEffect(() => {
   //   fetch("http://localhost:3000/users")
@@ -17,27 +18,27 @@ const App = () => {
   // }, []);
 
   useEffect(() => {
-    fetchUsers()
+    fetchTasks()
     .then((response) => {
-      setUsers(response);
+      setTasks(response);
     })
     .catch((error) => {
       console.error(error);
     });
   }, []);
 
-  const handleAddUser = (user) => {
-    setUsers(prevUsers => [...prevUsers, user])
+  const handleAddTask = (task) => {
+    setTasks(prevTasks => [...prevTasks, task])
   }
 
-  console.log(users);
+  console.log(tasks);
 
   return (
     <div>
-      <UserForm handleAddUser={handleAddUser} />
+      <UserForm handleAddTask={handleAddTask} />
     <ul>
-      {users.map((user) => (
-        <li key={user.name}>{user.name}</li>
+      {tasks.map((task) => (
+        <li key={task.name}>{task.name}</li>
       ))}
     </ul>
   </div>
