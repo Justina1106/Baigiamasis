@@ -45,7 +45,7 @@ const validationSchema = Yup.object().shape({
           <ErrorMessage name="age" component="div" />
         </div>
             <button type="submit">Submit user</button>
-            <h2>Užsiregistravę vartotojai</h2>  
+            
         </Form>
        </Formik>
     );

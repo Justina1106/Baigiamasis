@@ -54,4 +54,20 @@ app.post("/tasks", async (req, res) => {
    }
  });
 
+ app.delete("/tasks", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const con = await client.connect();
+      const data = await con
+        .db("api")
+        .collection("users")
+        .deleteOne({ _id: new ObjectId(id) });
+      await con.close();
+  
+      res.send(data);
+    } catch (error) {
+      res.status(400).send(error);
+    }
+  });
+
 app.listen(port, () => console.log(`Server is running on port ${port}`));

@@ -1,22 +1,11 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserForm from "./UserForm";
-// import { fetchUsers } from "./api/users";
-import { fetchTasks } from "./api/tasks";
+import { fetchTasks, deleteTask } from "./api/tasks";
 import "./app.css";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:3000/users")
-  //   .then((resp) => resp.json())
-  //   .then((response) => {
-  //     setUsers(response);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-  // }, []);
 
   useEffect(() => {
     fetchTasks()
@@ -34,15 +23,33 @@ const App = () => {
 
   console.log(tasks);
 
+  const handleDeleteTask = (taskId) => {
+    // Funkcija ištrinanti vartotoją
+    deleteTask(taskId)
+      .then(() => {
+        // Po sėkmingo ištrynimo, atnaujiname vartotojų sąrašą
+        setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className="container">
       <UserForm handleAddTask={handleAddTask} />
+      <h2 className="text">Užsiregistravę vartotojai</h2>  
+      
     <ul>
       {tasks.map((task) => (
-        <li key={task.name}>{task.name} - {task.email} - {task.gimimodata}</li>
-       
+        <li key={task._id}>
+          {task.name} - {task.email} - {task.gimimodata}{" "}
+          <button onClick={() => handleDeleteTask(task._id)}>Ištrinti</button>
+          </li>
+        
       ))}
     </ul>
+    
   </div>
   );
 };
