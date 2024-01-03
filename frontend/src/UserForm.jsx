@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-// import { createUser } from "./api/users";
 import { createTask } from "./api/tasks";
 import "./UserForm.css";
 
@@ -22,29 +21,29 @@ try {
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email address").required("Email is required"),
-    age: Yup.number().integer("Age must be an integer").required("Age is required"),
+    year: Yup.number().integer("Age must be an integer").required("Age is required"),
   });
 
  return (
-       <Formik initialValues={{ name: "", email: "", age: "" }} onSubmit={handleSubmit}>
+       <Formik initialValues={{ name: "", email: "", year: "" }} onSubmit={handleSubmit}>
         <Form>
         <div className="forma">
         <h1>Renginių Organizavimo Programa</h1>
           <label htmlFor="name">Vardas ir Pavardė:</label>
-          <Field type="text" id="name" name="name" placeholder="Enter name and surname..." />
+          <Field type="text" id="name" name="name" placeholder="Įveskite vardą ir pavardę..." />
           <ErrorMessage name="name" component="div" />
         </div>
         <div className="forma">
           <label htmlFor="email">Email:</label>
-          <Field type="email" id="email" name="email" placeholder="Enter email..." />
+          <Field type="email" id="email" name="email" placeholder="Įveskite email..." />
           <ErrorMessage name="email" component="div" />
         </div>
         <div className="forma">
-          <label htmlFor="age">Amžius:</label>
-          <Field type="number" id="age" name="age" placeholder="Enter age..." />
-          <ErrorMessage name="age" component="div" />
+          <label htmlFor="year">Gimimo data:</label>
+          <Field type="number" id="year" name="year" placeholder="Įveskite gimimo datą..." />
+          <ErrorMessage name="year" component="div" />
         </div>
-            <button type="submit">Submit user</button>
+            <button type="submit">Pateikti vartotoją</button>
             
         </Form>
        </Formik>

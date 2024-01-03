@@ -13,7 +13,7 @@ export const createTask = async (task) => {
 };
 
 
-export const deleteTask = async (taskId) => {
-    const response = await axios.delete(`${API}/tasks/${taskId}`);
-    return response.data;
-  };
+ export const deleteTask = async (taskId) => {
+     const response = await axios.delete(`${API}/tasks/${taskId}`);
+     return response.data;
+   };
