@@ -45,8 +45,11 @@ input {
 }
 
 button {
-  background-color: #4caf50;
-  color: #fff;
+  /* background-color: #4caf50; */
+  background: rgb(34,193,195);
+  background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(49,253,45,0.25253851540616246) 100%);
+  color: #0f0b0b;
+  font-size: 20px;
   padding: 10px;
   border: none;
   border-radius: 5px;
