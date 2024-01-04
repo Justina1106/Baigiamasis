@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import UserForm from "./UserForm";
-import { fetchTasks, deleteTask } from "./api/tasks";
+import EditForm from "./EditForm";
+import { fetchTasks, deleteTask, editTask } from "./api/tasks";
 import "./app.css";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
 
 
   // useEffect(() => {
@@ -34,6 +37,26 @@ const App = () => {
 
   console.log(tasks);
 
+  
+  const handleEditTask = (taskId, editedTask) => {
+    // Funkcija, kuri vykdo redagavimą
+    editTask(taskId, editedTask)
+      .then(() => {
+        // Po sėkmingo redagavimo, atnaujiname vartotojų sąrašą
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === taskId ? editedTask : task
+          )
+        );
+        setEditingTask(null);
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+
   const handleDeleteTask = (taskId) => {
 
         // Funkcija ištrinanti vartotoją
@@ -47,6 +70,17 @@ const App = () => {
         });
     };
 
+    const handleStartEdit = (taskId) => {
+      const taskToEdit = tasks.find((task) => task._id === taskId);
+      setEditingTask(taskToEdit);
+      setIsEditing(true);
+    };
+  
+    const handleCancelEdit = () => {
+      setEditingTask(null);
+      setIsEditing(false);
+    };
+
   return (
     <div className="container">
       <UserForm handleAddTask={handleAddTask} />
@@ -54,17 +88,25 @@ const App = () => {
           src="https://ik.imagekit.io/mamabubu/images/1655619565-433se6jdkg1.jpeg?tr=w-850"
           alt="People"
         /></h2>  
-      
+        {isEditing ? (
+        <EditForm
+          task={editingTask}
+          handleEditTask={handleEditTask}
+          handleCancelEdit={handleCancelEdit}
+        />
+      ) : (
+
     <ul>
       {tasks.map((task) => (
         <li key={task._id}>
         {task.name} - {task.email} - {task.year}
-        { <button onClick={() => handleDeleteTask(task._id)}>Ištrinti</button> }
+        <button onClick={() => handleStartEdit(task._id)}>Redaguoti</button>
+        <button onClick={() => handleDeleteTask(task._id)}>Ištrinti</button> 
         </li>
         
       ))}
     </ul>
-    
+      )}
   </div>
   );
 };

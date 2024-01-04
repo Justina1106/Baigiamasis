@@ -12,11 +12,11 @@ app.use(express.json());
 const port = process.env.PORT || 8080;
 const uri = process.env.DB_CONNECTION_STRING;
 
-const users = [{_id: "123456", name: "Vita"}];
+// const users = [{_id: "123456", name: "Vita"}];
 
-app.get("/users", (req, res) => {
-  res.send(users);
-});
+// app.get("/users", (req, res) => {
+//   res.send(users);
+// });
 
 
 const client = new MongoClient(uri);
