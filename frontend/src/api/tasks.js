@@ -12,7 +12,7 @@ export const createTask = async (task) => {
     return response.data;
 };
 
-export const editTask = async (taskId, editTask) => {
+export const editTask = async (taskId, editedTask) => {
     const response = await axios.put(`${API}/tasks/${taskId}`, editedTask);
     return response.data;
   };

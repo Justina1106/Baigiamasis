@@ -1,4 +1,3 @@
-// EditForm.js
 import React, { useState, useEffect } from "react";
 
 const EditForm = ({ task, handleEditTask, handleCancelEdit }) => {

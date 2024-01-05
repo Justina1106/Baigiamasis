@@ -38,15 +38,21 @@ const App = () => {
   console.log(tasks);
 
   
-  const handleEditTask = (taskId, editedTask) => {
+  // const handleEditTask = (taskId, editedTask) => {
+    const handleEditTask = (editedTask) => {
     // Funkcija, kuri vykdo redagavimą
-    editTask(taskId, editedTask)
+    console.log("Submitting edited task:", editedTask);
+
+  
+    if (editedTask) {
+      console.log("Edited Task:", editedTask);
+
+    // editTask(taskId, editedTask)
+    editTask(editedTask._id, editedTask)
       .then(() => {
         // Po sėkmingo redagavimo, atnaujiname vartotojų sąrašą
         setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task._id === taskId ? editedTask : task
-          )
+          prevTasks.map((task) => (task._id === editedTask._id ? editedTask : task))
         );
         setEditingTask(null);
         setIsEditing(false);
@@ -54,6 +60,9 @@ const App = () => {
       .catch((error) => {
         console.error(error);
       });
+    } else {
+      console.error("Edited Task is undefined or null");
+    } 
   };
 
 

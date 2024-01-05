@@ -46,24 +46,47 @@ app.post("/tasks", async (req, res) => {
    }
  });
 
-//  app.delete("/tasks/:id", async (req, res) => {
-//     try {
-//       const id = req.params.id;
-//       const con = await client.connect();
+ app.delete("/tasks/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const con = await client.connect();
 
-//     //   console.log(`Deleting task with ID: ${id}`);
+    //   console.log(`Deleting task with ID: ${id}`);
 
-//       const data = await con
-//         .db("api")
-//         .collection("users")
-//         .deleteOne({ _id: new ObjectId(id) });
-//       await con.close();
+      const data = await con
+        .db("api")
+        .collection("users")
+        .deleteOne({ _id: new ObjectId(id) });
+      await con.close();
   
-//       res.send(data);
-//     } catch (error) {
-//         // console.error(error); 
-//       res.status(400).send(error);
-//     }
-//   });
+      res.send(data);
+    } catch (error) {
+        // console.error(error); 
+      res.status(400).send(error);
+    }
+  });
+
+app.put("/tasks/:id", async (req, res) => {
+    try {
+      const id = req.params.id;
+      const editedTask = req.body;
+      delete editedTask._id;
+      const con = await client.connect();
+      const response = await con
+        .db("api")
+        .collection("users")
+        .findOneAndUpdate(
+          { _id: new ObjectId(id) },
+          { $set: editedTask },
+          { returnDocument: 'after' }
+        );
+  
+      await con.close();
+      res.send(response.value); // Siunčiame atnaujintą užduotį atgal į kliento pusę
+    } catch (error) {
+      console.error(error);
+      res.status(400).send(error);
+    }
+  });
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
